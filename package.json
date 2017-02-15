@@ -1,0 +1,21 @@
+{
+  "name": "hw",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "clear": "0.0.1",
+    "cli-table": "^0.3.1",
+    "cli-table2": "^0.2.0",
+    "console.table": "^0.8.0",
+    "figlet": "^1.2.0",
+    "inquirer": "^3.0.1",
+    "mysql": "^2.13.0"
+  }
+}
