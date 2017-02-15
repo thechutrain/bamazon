@@ -1,0 +1,2 @@
+# bamazon
+> cli mysql app
