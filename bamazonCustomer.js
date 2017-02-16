@@ -47,7 +47,11 @@ var processOrder = function(orderObj){
     var quantity = orderObj.quantity;
     connection.query("UPDATE product set stock_quantity = stock_quantity - ? WHERE id = ?;", [quantity, id], function(err, data){
       if (err) reject(err);
-      resolve(data);
+      connection.query("INSERT INTO sale (quantity_purchased, product_id) VALUES (?, ?);",[quantity, id], function(err, data){
+        if (err) reject(err);
+        resolve(data);
+      })
+      // resolve(data);
     });
   })
 }
@@ -115,7 +119,10 @@ var askProductNumber = function(id){
   return new Promise((resolve, reject)=>{
     // ask user for product id
     askProductId().then((dataObj)=>{
-      if (!dataObj.valid) reject( "NOT a valid id");
+      if (!dataObj.valid) {
+        reject( "NOT a valid id")
+        return; // IF I DON'T have this I get a unhandled promise err
+      };
       getNumAvailable(dataObj.id)
       .then((product)=>{
         // console.log(product.stock_quantity);
@@ -161,7 +168,7 @@ var checkOut = function(){
         type: "confirm",
         name: "proceed",
         message: `Do you want to purchase x${order.quantity} of "${order.product_name}" for a grand total of: $${total}`
-      }).then((input)=>{
+      }, (err)=> {console.log(err)}).then((input)=>{
         // 2.) if yes, then process order
         // console.log(input);
         if (input.proceed){
