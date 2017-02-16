@@ -1,4 +1,4 @@
-CREATE DATABASE bamazon_db;
+CREATE DATABASE IF NOT EXISTS bamazon_db;
 use bamazon_db;
 
 CREATE TABLE IF NOT EXISTS department (
@@ -45,4 +45,16 @@ INSERT INTO product (product_name, department_id, price, stock_quantity)
       ("denim jacket", 3, 47.95, 15),
       ("cowboy boots", 3, 125.50, 10),
       ("khaki pants", 3, 25.95, 15);
+
+# INSERT INTO sale (product_id, quantity_purchased) VALUES (1, 1900);
+INSERT INTO sale (product_id, quantity_purchased)
+  VALUES (2, 10), (4, 10), (5, 10), (7, 100), (9, 5);
+
+# SUPERVISOR QUERY
+SELECT p.department_id, d.department_name, d.over_head_cost, SUM(s.quantity_purchased * p.price) as product_sales,
+  (SUM(s.quantity_purchased * p.price) - d.over_head_cost) as total_profit
+  FROM sale s LEFT JOIN product p ON s.product_id = p.id
+  INNER JOIN department d ON p.department_id = d.id
+  GROUP BY p.department_id
+  ORDER BY total_profit DESC;
 
